@@ -10,7 +10,6 @@ predictor = dlib.shape_predictor(PREDICTOR_PATH)
 face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 eye_cascade = cv2.CascadeClassifier('haarcascade_eye.xml')
 
-
 def get_faces (gray, copy, im):
     face = face_cascade.detectMultiScale(gray, 1.3, 5)
     for(x,y,w,h) in face:
@@ -42,7 +41,7 @@ def annotate_landmarks(im, landmarks):
         cv2.circle(im, pos, 3, color=(0, 255, 255))
     return im
 
-image = cv2.imread('test1.jpg')
+image = cv2.imread('test4.jpg')
 gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY) 
 copy = image
 #face = face_cascade.detectMultiScale(image, 1.3, 5)
