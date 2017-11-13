@@ -35,6 +35,8 @@
     <Content Include="shape_predictor_68_face_landmarks.dat" />
     <Content Include="test.jpg" />
     <Content Include="test2.jpg" />
+    <Content Include="test3.jpg" />
+    <Content Include="test4.jpg" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
