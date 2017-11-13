@@ -10,15 +10,12 @@ predictor = dlib.shape_predictor(PREDICTOR_PATH)
 face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 eye_cascade = cv2.CascadeClassifier('haarcascade_eye.xml')
 
-#class TooManyFaces(Exception):
-  #  pass
-
 class NoFaces(Exception):
     pass
 
-def get_faces (im):
+def get_faces (copy, im):
     #gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    face = face_cascade.detectMultiScale(im, 1.3, 5)
+    face = face_cascade.detectMultiScale(copy, 1.3, 5)
 
     for(x,y,w,h) in face:
         cv2.rectangle(im, (x,y),(x+w,y+h),(255,0,0),2)
@@ -34,8 +31,6 @@ def get_faces (im):
 def get_landmarks(im):
     rects = detector(im, 1)
     
-   # if len(rects) > 1:
-   #     raise TooManyFaces
     if len(rects) == 0:
         raise NoFaces
 
@@ -48,15 +43,11 @@ def annotate_landmarks(im, landmarks):
         cv2.putText(im, str(idx), pos,
                     fontFace=cv2.FONT_HERSHEY_SCRIPT_SIMPLEX,
                     fontScale=0.4,
-
                     color=(0, 0, 255))
         cv2.circle(im, pos, 3, color=(0, 255, 255))
     return im
 
-
-
-
-image = cv2.imread('test.jpg')
+image = cv2.imread('test2.jpg')
 copy = image
 face = face_cascade.detectMultiScale(image, 1.3, 5)
 
@@ -69,7 +60,7 @@ for(x,y,w,h) in face:
 #landmarks = get_landmarks(image)
 #image_with_landmarks = annotate_landmarks(image, landmarks)
 #image_with_fd_landmarks = get_faces(image_with_landmarks)
-image_with_fd_landmarks = get_faces(image)
+image_with_fd_landmarks = get_faces(copy,image)
 
 cv2.imshow('Landmarks und Gesichtserkennung', image_with_fd_landmarks)
 cv2.waitKey(0)
