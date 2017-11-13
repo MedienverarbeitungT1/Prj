@@ -18,7 +18,6 @@ def get_faces (gray, copy, im):
         roi_gray = gray[y:y+h, x:x+w]
         roi = im [y:y+h, x:x+w]
         eye = eye_cascade.detectMultiScale(roi_gray)
-        print (facecount)
         for(ex,ey,ew,eh)in eye:
             cv2.rectangle(roi, (ex, ey),(ex+ew, ey+eh),(0,255,0),2)
     return im
@@ -43,7 +42,7 @@ def annotate_landmarks(im, landmarks):
         cv2.circle(im, pos, 3, color=(0, 255, 255))
     return im
 
-image = cv2.imread('test.jpg')
+image = cv2.imread('test1.jpg')
 gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY) 
 copy = image
 #face = face_cascade.detectMultiScale(image, 1.3, 5)

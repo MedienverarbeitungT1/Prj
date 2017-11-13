@@ -6,7 +6,7 @@
     <ProjectGuid>426cedd0-7651-420d-8fad-ee392897dfbe</ProjectGuid>
     <ProjectHome>
     </ProjectHome>
-    <StartupFile>FirstFacialLandmarks.py</StartupFile>
+    <StartupFile>SecondFacialLandmarks.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
