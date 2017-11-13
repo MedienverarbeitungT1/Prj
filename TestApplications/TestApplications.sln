@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "FirstFacialLandmarks", "FirstFacialLandmarks\FirstFacialLandmarks.pyproj", "{426CEDD0-7651-420D-8FAD-EE392897DFBE}"
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "FacialLandmarks", "FirstFacialLandmarks\FacialLandmarks.pyproj", "{426CEDD0-7651-420D-8FAD-EE392897DFBE}"
 EndProject
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "FirstTestApplication", "FirstTestApplication\FirstTestApplication.pyproj", "{1227997A-4649-4B60-9E51-4D8299B2FF6D}"
 EndProject
