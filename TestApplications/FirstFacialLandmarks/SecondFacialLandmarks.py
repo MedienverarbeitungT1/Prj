@@ -7,21 +7,18 @@ PREDICTOR_PATH = "shape_predictor_68_face_landmarks.dat"
 
 detector = dlib.get_frontal_face_detector()
 predictor = dlib.shape_predictor(PREDICTOR_PATH)
-face_cascade = cv2.CascadeClassifier('haarcascade/haarcascade_frontalface_default.xml')
-eye_cascade = cv2.CascadeClassifier('haarcascade/haarcascade_eye.xml')
+face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
+eye_cascade = cv2.CascadeClassifier('haarcascade_eye.xml')
 
-class NoFaces(Exception):
-    pass
 
-def get_faces (copy, im):
-    #gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    face = face_cascade.detectMultiScale(copy, 1.3, 5)
-
+def get_faces (gray, copy, im):
+    face = face_cascade.detectMultiScale(gray, 1.3, 5)
     for(x,y,w,h) in face:
         cv2.rectangle(im, (x,y),(x+w,y+h),(255,0,0),2)
-        #roi_gray = gray[y:y+h, x:x+w]
+        roi_gray = gray[y:y+h, x:x+w]
         roi = im [y:y+h, x:x+w]
-        eye = eye_cascade.detectMultiScale(roi)
+        eye = eye_cascade.detectMultiScale(roi_gray)
+        print (facecount)
         for(ex,ey,ew,eh)in eye:
             cv2.rectangle(roi, (ex, ey),(ex+ew, ey+eh),(0,255,0),2)
     return im
@@ -46,21 +43,19 @@ def annotate_landmarks(im, landmarks):
         cv2.circle(im, pos, 3, color=(0, 255, 255))
     return im
 
-
-
-image = cv2.imread('images/test2.jpg')
+image = cv2.imread('test.jpg')
+gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY) 
 copy = image
-face = face_cascade.detectMultiScale(image, 1.3, 5)
-
+#face = face_cascade.detectMultiScale(image, 1.3, 5)
+face = face_cascade.detectMultiScale(gray, 1.3, 5)
 for(x,y,w,h) in face:
     landmarks = get_landmarks(image)
     image = annotate_landmarks(image, landmarks)
 
+image_with_fd_landmarks = get_faces(gray, copy,image)
 
-#landmarks = get_landmarks(image)
-#image_with_landmarks = annotate_landmarks(image, landmarks)
-#image_with_fd_landmarks = get_faces(image_with_landmarks)
-image_with_fd_landmarks = get_faces(copy,image)
+class NoFaces(Exception):
+    pass
 
 cv2.imshow('Landmarks und Gesichtserkennung', image_with_fd_landmarks)
 cv2.waitKey(0)
