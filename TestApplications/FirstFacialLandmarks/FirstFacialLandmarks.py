@@ -36,7 +36,7 @@ def annotate_landmarks(im, landmarks):
         cv2.circle(im, pos, 3, color=(0, 255, 255))
     return im
 
-image = cv2.imread('donald.jpg')
+image = cv2.imread('images/donald.jpg')
 landmarks = get_landmarks(image)
 image_with_landmarks = annotate_landmarks(image, landmarks)
 

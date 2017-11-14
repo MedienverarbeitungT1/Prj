@@ -7,8 +7,8 @@ PREDICTOR_PATH = "shape_predictor_68_face_landmarks.dat"
 
 detector = dlib.get_frontal_face_detector()
 predictor = dlib.shape_predictor(PREDICTOR_PATH)
-face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
-eye_cascade = cv2.CascadeClassifier('haarcascade_eye.xml')
+face_cascade = cv2.CascadeClassifier('haarcascade/haarcascade_frontalface_default.xml')
+eye_cascade = cv2.CascadeClassifier('haarcascade/haarcascade_eye.xml')
 
 class NoFaces(Exception):
     pass
@@ -47,7 +47,7 @@ def annotate_landmarks(im, landmarks):
         cv2.circle(im, pos, 3, color=(0, 255, 255))
     return im
 
-image = cv2.imread('test2.jpg')
+image = cv2.imread('images/test2.jpg')
 copy = image
 face = face_cascade.detectMultiScale(image, 1.3, 5)
 
