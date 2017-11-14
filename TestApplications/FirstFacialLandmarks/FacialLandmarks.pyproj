@@ -27,16 +27,18 @@
     <Compile Include="SecondFacialLandmarks.py" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="donald.jpg" />
-    <Content Include="gesicht.png" />
-    <Content Include="haarcascade_eye.xml" />
-    <Content Include="haarcascade_frontalface_default.xml" />
-    <Content Include="haarcascade_smile.xml" />
+    <Content Include="images\donald.jpg" />
+    <Content Include="images\gesicht.png" />
+    <Content Include="haarcascade\haarcascade_eye.xml" />
+    <Content Include="haarcascade\haarcascade_frontalface_default.xml" />
+    <Content Include="haarcascade\haarcascade_smile.xml" />
     <Content Include="shape_predictor_68_face_landmarks.dat" />
-    <Content Include="test.jpg" />
-    <Content Include="test2.jpg" />
-    <Content Include="test3.jpg" />
-    <Content Include="test4.jpg" />
+    <Content Include="images\test.jpg" />
+    <Content Include="images\test2.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="images\" />
+    <Folder Include="haarcascade\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
