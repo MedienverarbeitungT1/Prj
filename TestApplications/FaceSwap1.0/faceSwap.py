@@ -6,9 +6,11 @@ import numpy as np
 import cv2
 
 # Please notice: This is just a test-version which is indeed runable by now, but doesn't include face detection.
-# In order to create a new application which provides both functions of faceSwap and facialLandmwaks
+# In order to create a new application which provides both functions of faceSwap, facialLandmarks/faceDetection
 # please create another solution on branch "development"!
 
+# Please be aware: The current state of this project does NOT provide a solution without given points using .txt-files
+# This problem could theoretically be solved by using facial landmarks as points...
 
 
 # Read points from text file
@@ -160,7 +162,7 @@ if __name__ == '__main__' :
     points1 = readPoints(filename1 + '.txt')
     points2 = readPoints(filename2 + '.txt')    
     
-    # Find convex hull
+    # Find convex hull (using the technique of our lecture)
     hull1 = []
     hull2 = []
 
@@ -207,11 +209,12 @@ if __name__ == '__main__' :
     center = ((r[0]+int(r[2]/2), r[1]+int(r[3]/2)))
         
     
-    # Clone seamlessly.
+    # Clone seamlessly for output
     output = cv2.seamlessClone(np.uint8(img1Warped), img2, mask, center, cv2.NORMAL_CLONE)
     
+    # Show the images
     cv2.imshow("Face Swapped", output)
     cv2.waitKey(0)
-    
+    # Close this sh**...
     cv2.destroyAllWindows()
         
