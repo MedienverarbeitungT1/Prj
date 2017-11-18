@@ -7,6 +7,10 @@ Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "FacialLandmarks", "FirstFac
 EndProject
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "FirstTestApplication", "FirstTestApplication\FirstTestApplication.pyproj", "{1227997A-4649-4B60-9E51-4D8299B2FF6D}"
 EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "PictureMorphing", "PythonApplication1\PictureMorphing.pyproj", "{F3F3A7E1-CD0B-4A9A-BA82-D99CFE15D1A8}"
+EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "FaceSwap1.0", "FaceSwap1.0\FaceSwap1.0.pyproj", "{9D7875C9-94C8-4736-BCD0-2316384C082A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,6 +21,10 @@ Global
 		{426CEDD0-7651-420D-8FAD-EE392897DFBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1227997A-4649-4B60-9E51-4D8299B2FF6D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1227997A-4649-4B60-9E51-4D8299B2FF6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3F3A7E1-CD0B-4A9A-BA82-D99CFE15D1A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3F3A7E1-CD0B-4A9A-BA82-D99CFE15D1A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9D7875C9-94C8-4736-BCD0-2316384C082A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9D7875C9-94C8-4736-BCD0-2316384C082A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
