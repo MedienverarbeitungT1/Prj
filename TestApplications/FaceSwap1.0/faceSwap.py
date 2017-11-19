@@ -173,7 +173,7 @@ if __name__ == '__main__' :
         hull2.append(points2[int(hullIndex[i])])
     
     
-    # Find delanauy traingulation for convex hull points
+    # Find delanauy traingulation for convex hull points (seriously... I don't even know why but hey)
     sizeImg2 = img2.shape    
     rect = (0, 0, sizeImg2[1], sizeImg2[0])
      
