@@ -12,6 +12,9 @@ import cv2
 # Please be aware: The current state of this project does NOT provide a solution without given points using .txt-files
 # This problem could theoretically be solved by using facial landmarks as points...
 
+# Sasha was here :3
+
+
 
 # Read points from text file
 def readPoints(path) :
