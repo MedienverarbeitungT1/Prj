@@ -13,7 +13,7 @@ import cv2
 # This problem could theoretically be solved by using facial landmarks as points...
 
 # Sasha was here :3
-
+# Alex was here :<
 
 
 # Read points from text file
