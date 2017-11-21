@@ -18,10 +18,10 @@ def get_faces (copy, im):
     face = face_cascade.detectMultiScale(copy, 1.3, 5)
 
     for(x,y,w,h) in face:
-        x = x - 50
-        y = y - 75
-        w = w + 100
-        h = h + 150
+        x = int(round(x*0.96))
+        y = int(round(y*0.7))
+        w = int(round(w*1.5))
+        h = int(round(h*1.7))
         cv2.rectangle(im, (x,y),(x+w,y+h),(255,0,0),2)
         #roi_gray = gray[y:y+h, x:x+w]
         roi = im [y:y+h, x:x+w]
