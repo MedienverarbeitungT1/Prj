@@ -32,6 +32,7 @@
     <Content Include="haarcascade\haarcascade_eye.xml" />
     <Content Include="haarcascade\haarcascade_frontalface_default.xml" />
     <Content Include="haarcascade\haarcascade_smile.xml" />
+    <Content Include="images\test3.jpg" />
     <Content Include="shape_predictor_68_face_landmarks.dat" />
     <Content Include="images\test.jpg" />
     <Content Include="images\test2.jpg" />
