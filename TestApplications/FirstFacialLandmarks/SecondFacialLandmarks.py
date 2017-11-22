@@ -28,7 +28,6 @@ def get_faces (copy, im, target):
         cv2.rectangle(im, (x,y),(x+w,y+h),(255,0,0),2)
         crop_img = copy[y:y+h,x:x+w]
         
-        x_offset=y_offset=50
         target[y:y+crop_img.shape[0], x:x+crop_img.shape[1]] = crop_img
         #roi_gray = gray[y:y+h, x:x+w]
         roi = im [y:y+h, x:x+w]
@@ -58,8 +57,8 @@ def annotate_landmarks(im, landmarks):
 
 
 
-image = cv2.imread('images/alexsasha2.JPG')
-target = cv2.imread('images/alexsasha1.JPG')
+image = cv2.imread('images/alexsashaausgang1.JPG')
+target = cv2.imread('images/alexsashatarget1.JPG')
 copy = image
 face = face_cascade.detectMultiScale(image, 1.3, 5)
 

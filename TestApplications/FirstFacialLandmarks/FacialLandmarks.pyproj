@@ -27,6 +27,12 @@
     <Compile Include="SecondFacialLandmarks.py" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="images\alexsashaanniausgang1.JPG" />
+    <Content Include="images\alexsashaanniausgang2.JPG" />
+    <Content Include="images\alexsashaannitarget1.JPG" />
+    <Content Include="images\alexsashaannitarget2.JPG" />
+    <Content Include="images\alexsashaausgang1.JPG" />
+    <Content Include="images\alexsashatarget1.JPG" />
     <Content Include="images\donald.jpg" />
     <Content Include="images\gesicht.png" />
     <Content Include="haarcascade\haarcascade_eye.xml" />
