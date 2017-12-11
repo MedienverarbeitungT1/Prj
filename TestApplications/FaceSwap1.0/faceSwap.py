@@ -164,7 +164,7 @@ if __name__ == '__main__' :
     # Read array of corresponding points
     points1 = readPoints(filename1 + '.txt')
     points2 = readPoints(filename2 + '.txt')    
-    
+  
     # Find convex hull (using the technique of our lecture)
     hull1 = []
     hull2 = []
