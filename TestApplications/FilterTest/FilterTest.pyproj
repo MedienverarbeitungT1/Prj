@@ -3,16 +3,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>426cedd0-7651-420d-8fad-ee392897dfbe</ProjectGuid>
-    <ProjectHome>
-    </ProjectHome>
-    <StartupFile>SecondFacialLandmarks.py</StartupFile>
+    <ProjectGuid>0a0f0b83-65cc-44a1-a920-5aab54728048</ProjectGuid>
+    <ProjectHome>.</ProjectHome>
+    <StartupFile>FilterTest.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
-    <Name>FacialLandmarks</Name>
-    <RootNamespace>FirstFacialLandmarks</RootNamespace>
+    <Name>FilterTest</Name>
+    <RootNamespace>FilterTest</RootNamespace>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -24,23 +23,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="FilterTest.py" />
-    <Compile Include="FirstFacialLandmarks.py" />
-    <Compile Include="SecondFacialLandmarks.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="haarcascade\" />
+    <Folder Include="images\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="images\alexprofil.JPG" />
-    <Content Include="images\donald.jpg" />
-    <Content Include="images\gesicht.png" />
-    <Content Include="haarcascade\haarcascade_eye.xml" />
-    <Content Include="haarcascade\haarcascade_frontalface_default.xml" />
-    <Content Include="haarcascade\haarcascade_smile.xml" />
-    <Content Include="shape_predictor_68_face_landmarks.dat" />
-    <Content Include="images\test.jpg" />
-    <Content Include="images\test2.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="images\" />
-    <Folder Include="haarcascade\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

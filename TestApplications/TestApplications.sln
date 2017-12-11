@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "FacialLandmarks", "FirstFacialLandmarks\FacialLandmarks.pyproj", "{426CEDD0-7651-420D-8FAD-EE392897DFBE}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "PictureMorphing", "PythonApplication1\PictureMorphing.pyproj", "{F3F3A7E1-CD0B-4A9A-BA82-D99CFE15D1A8}"
 EndProject
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "FaceSwap1.0", "FaceSwap1.0\FaceSwap1.0.pyproj", "{9D7875C9-94C8-4736-BCD0-2316384C082A}"
+EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "FilterTest", "FilterTest\FilterTest.pyproj", "{0A0F0B83-65CC-44A1-A920-5AAB54728048}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,6 +27,8 @@ Global
 		{F3F3A7E1-CD0B-4A9A-BA82-D99CFE15D1A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9D7875C9-94C8-4736-BCD0-2316384C082A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9D7875C9-94C8-4736-BCD0-2316384C082A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A0F0B83-65CC-44A1-A920-5AAB54728048}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A0F0B83-65CC-44A1-A920-5AAB54728048}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
