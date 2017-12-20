@@ -6,7 +6,7 @@
     <ProjectGuid>426cedd0-7651-420d-8fad-ee392897dfbe</ProjectGuid>
     <ProjectHome>
     </ProjectHome>
-    <StartupFile>SecondFacialLandmarks.py</StartupFile>
+    <StartupFile>GuiModule.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -24,20 +24,29 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="FirstFacialLandmarks.py" />
+    <Compile Include="forPresentationOnly.py" />
+    <Compile Include="GuiModule.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="SecondFacialLandmarks.py" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="haarcascade\haarcascade_profileface.xml" />
     <Content Include="images\alexsashaanniausgang1.JPG" />
     <Content Include="images\alexsashaanniausgang2.JPG" />
     <Content Include="images\alexsashaannitarget1.JPG" />
     <Content Include="images\alexsashaannitarget2.JPG" />
     <Content Include="images\alexsashaausgang1.JPG" />
+    <Content Include="images\alexsashaausgang2.jpg" />
     <Content Include="images\alexsashatarget1.JPG" />
+    <Content Include="images\alexsashatarget2.jpg" />
     <Content Include="images\donald.jpg" />
     <Content Include="images\gesicht.png" />
     <Content Include="haarcascade\haarcascade_eye.xml" />
     <Content Include="haarcascade\haarcascade_frontalface_default.xml" />
     <Content Include="haarcascade\haarcascade_smile.xml" />
+    <Content Include="images\IMG_3597.JPG" />
+    <Content Include="images\IMG_3598.JPG" />
     <Content Include="images\test3.jpg" />
     <Content Include="shape_predictor_68_face_landmarks.dat" />
     <Content Include="images\test.jpg" />
