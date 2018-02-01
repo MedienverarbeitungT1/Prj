@@ -5,8 +5,6 @@ VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "Group Photo Application", "FirstFacialLandmarks\Group Photo Application.pyproj", "{426CEDD0-7651-420D-8FAD-EE392897DFBE}"
 EndProject
-Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "JunkFiles", "JunkFiles\JunkFiles.pyproj", "{1A2B144C-5648-44EC-AA8F-0ACE9261BD71}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,8 +13,6 @@ Global
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{426CEDD0-7651-420D-8FAD-EE392897DFBE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{426CEDD0-7651-420D-8FAD-EE392897DFBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1A2B144C-5648-44EC-AA8F-0ACE9261BD71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1A2B144C-5648-44EC-AA8F-0ACE9261BD71}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
