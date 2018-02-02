@@ -52,7 +52,7 @@ class PhotoLogic:
             numberOfFaces = numberOfFaces+1
         return im
     
-    def switch(self, im, number,target):
+    def switchRects(self, im, number,target):
         copy = im  
         face = self.face_cascade.detectMultiScale(copy, 1.3, 5)
         count = 1
@@ -73,7 +73,74 @@ class PhotoLogic:
 
                 count = count + 1
         return target
- 
+
+
+    def switchMasks(self, im,imageObj, number, target):
+        
+        image = im
+
+        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        out_face = np.zeros_like(image)
+        detector = dlib.get_frontal_face_detector()
+        predictor = dlib.shape_predictor(self.PREDICTOR_PATH)
+        rects = detector(gray, 1)
+        print("Number of faces detected: {}".format(len(rects)))
+        for (i, rect) in enumerate(rects):
+            if (i==number-1):   
+                shape = predictor(gray, rect)
+                array = []
+                for x in range(0,shape.num_parts):
+                    point = []
+                    point.append(shape.part(x).x)
+                    point.append(shape.part(x).y)
+                    array.append(point)
+                shape = face_utils.shape_to_np(shape)
+                remapped_shape = np.zeros_like(shape)
+                feature_mask = np.zeros((image.shape[0], image.shape[1]))     
+                remapped_shape = self.face_remap(shape)
+                cv2.fillConvexPoly(feature_mask, remapped_shape[0:27], 1)
+                feature_mask = feature_mask.astype(np.bool)
+                out_face[feature_mask] = image[feature_mask]
+  
+        tmp = cv2.cvtColor(out_face, cv2.COLOR_BGR2GRAY)
+        _,alpha = cv2.threshold(tmp,0,255,cv2.THRESH_BINARY)
+        b, g, r = cv2.split(out_face)
+        rgba = [b,g,r, alpha]
+        dst = cv2.merge(rgba,4)    
+        dst = cv2.cvtColor(dst, cv2.COLOR_RGBA2BGRA)        
+        pilImage = Image.fromarray(dst)
+        
+        x,y = pilImage.size
+        pilImage.convert("RGBA")
+
+
+
+        #target = cv2.cvtColor(target,cv2.COLOR_BGR2RGB)
+        #pilTarget = Image.fromarray(target)
+        #pilTarget.convert("RGBA")
+        target = cv2.cvtColor(target,cv2.COLOR_BGR2RGB)
+        pilTarget = Image.fromarray(target)
+
+
+
+
+
+
+
+        pilTarget.paste(pilImage,(0,0),pilImage)
+
+        
+        
+        return pilTarget;
+
+
+
+
+
+
+
+
+
 
     def get_faces (self,copy, im, target):
         face = self.face_cascade.detectMultiScale(copy, 1.3, 5)

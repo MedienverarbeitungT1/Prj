@@ -1,4 +1,5 @@
 import cv2
+import numpy
 from Tkinter import *
 from tkFileDialog import *
 from tkMessageBox import *
@@ -6,6 +7,7 @@ from PhotoLogic import *
 from PIL import ImageTk, Image
 import tkFont
 from Tkinter import Entry
+
    
 def generateWindow():
     root = Tk()
@@ -181,12 +183,12 @@ class GroupPhotoEditor:
               
 
     def onOk(self,number):
+        self.secondPreviewLabel.destroy()
+        photoLogic = PhotoLogic()
+        image = cv2.imread(self.initialImg)
+        target = cv2.imread(self.targetImg)
         if self.varForRadioBtn.get() == 1:
-            self.secondPreviewLabel.destroy()
-            photoLogic = PhotoLogic()
-            image = cv2.imread(self.initialImg)
-            target = cv2.imread(self.targetImg)
-            newImage = photoLogic.switch(image, number, target)
+            newImage = photoLogic.switchRects(image, number, target)
             cv2.imwrite("newImage.jpg", newImage)
             newImage = cv2.cvtColor(newImage, cv2.COLOR_BGR2RGB)     
             toShow = ImageTk.PhotoImage(Image.fromarray(newImage).resize((675,450), Image.ANTIALIAS))
@@ -195,9 +197,23 @@ class GroupPhotoEditor:
             self.secondPreviewLabel.pack(side = RIGHT, fill = BOTH, expand = YES)
             self.targetImg = "newImage.jpg"
         else:
-            print("Implement Logic for Masks ==> PhotoLogic.switchMasks()")
+      
+            imageObj = Image.open(self.initialImg)
+            image = cv2.imread(self.initialImg)
+            newImage = photoLogic.switchMasks(image,imageObj,number,target)
+            newImage1 = newImage.convert('RGB') 
+            open_cv_image = numpy.array(newImage1) 
+            # Convert RGB to BGR 
+            open_cv_image = open_cv_image[:, :, ::-1].copy() 
+            cv2.imwrite("newImage.jpg", open_cv_image)
+            #cv2.imshow("", open_cv_image) DEB
+            toShow = ImageTk.PhotoImage(newImage.resize((675,450), Image.ANTIALIAS))
+            self.secondPreviewLabel = Label(self.secondPreviewFrame, image = toShow, compound=CENTER,font=("Helvetica", 30))
+            self.secondPreviewLabel.image = toShow
+            self.secondPreviewLabel.pack(side = RIGHT, fill = BOTH, expand = YES)
+            self.targetImg = "newImage.jpg"
 
-
+            
     def onButton5(self):
         image = cv2.imread(self.initialImg)
         copy = image
