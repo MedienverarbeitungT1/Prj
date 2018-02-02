@@ -124,14 +124,6 @@ class PhotoLogic:
         return pilTarget;
 
 
-
-
-
-
-
-
-
-
     def get_faces (self,copy, im, target):
         face = self.face_cascade.detectMultiScale(copy, 1.3, 5)
         numberOfFaces = 1

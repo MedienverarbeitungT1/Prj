@@ -37,7 +37,7 @@ class GroupPhotoEditor:
     okButton = NONE
     switches = 0
     secondImage = NONE
-
+    
     number = 0 
 
     varForRadioBtn = NONE
@@ -56,13 +56,14 @@ class GroupPhotoEditor:
         bottomFrame = Frame(master).pack(side = BOTTOM)
         button1 = Button(bottomFrame,textvariable = firstImg, command= lambda:self.onButton1(master,firstImg)).pack(fill=BOTH)
         button2 = Button(bottomFrame,textvariable = secondImg, command = lambda: self.onButton2(master,secondImg)).pack(fill=BOTH)
-        button3 = Button(bottomFrame,text = "Generate Image (masks)", command = self.onButton3).pack(fill=BOTH)
-        button4 = Button(bottomFrame,text = "Generate Rectangles for Pic 1", command = lambda: self.onButton4(master,True)).pack(fill=BOTH)
-        button41 = Button(bottomFrame,text = "Generate Rectangles for Pic 2", command = lambda: self.onButton4(master,False)).pack(fill=BOTH)
-        button5 = Button(bottomFrame,text = "Generate Image (faces)", command = self.onButton5).pack(fill=BOTH)
-        button6 = Button(bottomFrame,text = "Generate Example", command = lambda: self.onButton6(master,firstImg,secondImg)).pack(fill=BOTH)
-        button7 = Button(bottomFrame,text = "Quit", fg="red", command = master.destroy).pack(fill=BOTH)
-
+        button3 = Button(bottomFrame,text = "Generate (masks)", command = self.onButton3).pack(fill=BOTH)
+        #button4 = Button(bottomFrame,text = "Generate Rectangles for Pic 1", command = lambda: self.onButton4(master,True)).pack(fill=BOTH)
+       # button41 = Button(bottomFrame,text = "Generate Rectangles for Pic 2", command = lambda: self.rect(master,False)).pack(fill=BOTH)
+        button5 = Button(bottomFrame,text = "Generate (faces)", command = self.onButton5).pack(fill=BOTH)
+        #button6 = Button(bottomFrame,text = "Generate Example", command = lambda: self.onButton6(master,firstImg,secondImg)).pack(fill=BOTH)
+        #button7 = Button(bottomFrame,text = "Quit", fg="red", command = master.destroy).pack(fill=BOTH)
+        button8 = Button(bottomFrame,text = "Undo last action", fg="red", command = self.onUndo).pack(fill=BOTH)
+        button9 = Button(bottomFrame, text = "Save Image...", command = self.file_save).pack(fill = BOTH)
 
     def onButton1(self,master,firstImg):
         
@@ -85,7 +86,7 @@ class GroupPhotoEditor:
             self.firstPreviewLabel.destroy()
         # create an image by using the filename-URL
         tmp = Image.open(filename)
-        tmp = tmp.resize((450, 300), Image.ANTIALIAS)
+        tmp = tmp.resize((675, 450), Image.ANTIALIAS)
         theImage = ImageTk.PhotoImage(tmp)
         # destroy the old label: delete all references to the old image
         self.firstPreviewLabel = Label(self.firstPreviewFrame, image = theImage,text ="Image 1", compound=CENTER,font=("Helvetica", 30))
@@ -93,7 +94,7 @@ class GroupPhotoEditor:
         self.firstPreviewLabel.image = theImage
         # pack the label without image in the frame for preview:
         self.firstPreviewLabel.pack(side = LEFT, fill = BOTH, expand = YES)
-
+        self.rect(master,True)
 
     def onButton2(self,master,secondImg):
          
@@ -116,7 +117,7 @@ class GroupPhotoEditor:
             self.secondPreviewLabel.destroy()
         # create an image by using the filename-URL
         tmp = Image.open(filename)
-        tmp = tmp.resize((450, 300), Image.ANTIALIAS)
+        tmp = tmp.resize((675, 450), Image.ANTIALIAS)
         theImage = ImageTk.PhotoImage(tmp)
         # destroy the old label: delete all references to the old image
         self.secondPreviewLabel = Label(self.secondPreviewFrame, image = theImage,text ="Image 2", compound=CENTER,font=("Helvetica", 30))
@@ -124,6 +125,7 @@ class GroupPhotoEditor:
         self.secondPreviewLabel.image = theImage
         # pack the label with out image in the frame for preview:
         self.secondPreviewLabel.pack(side = RIGHT, fill = BOTH, expand = YES)
+        self.rect(master,False)
 
     def onButton3(self):
         imageObj = Image.open(self.initialImg)
@@ -133,7 +135,7 @@ class GroupPhotoEditor:
         photoLogic = PhotoLogic()
         photoLogic.get_facial_convex(image,imageObj)
 
-    def onButton4(self,master,first):
+    def rect(self,master,first):
         if (first == True):
             image = cv2.imread(self.initialImg)
         else:
@@ -155,10 +157,7 @@ class GroupPhotoEditor:
              entry.setvar("0")
              self.okButton = Button(self.entryFrame,text = "Verschiebe Nr. -->",command = lambda: self.onOk(int(str(entry.get())))).pack(side = BOTTOM)    
              self.firstEntry = True
-            
-            
-
-
+                      
         if (first== True):
             self.firstPreviewLabel.destroy()
             self.firstPreviewLabel = Label(self.firstPreviewFrame, image = toShow,text ="Image 1", compound=CENTER,font=("Helvetica", 30))
@@ -178,14 +177,11 @@ class GroupPhotoEditor:
             self.secondPreviewLabel.pack(side = RIGHT, fill = BOTH, expand = YES) 
             if self.checkBoxFrame == NONE:
                 self.checkBoxFrame = Frame(master).pack(side = BOTTOM)
-                Label(self.checkBoxFrame, text = "Choose option:").pack(side = TOP)
+                #Label(self.checkBoxFrame, text = "Choose option:").pack(side = UP)
                 Radiobutton(self.checkBoxFrame, text="Rectangle", padx = 20, variable=self.varForRadioBtn, value=1).pack(side = LEFT)
                 Radiobutton(self.checkBoxFrame, text="Mask", padx = 20, variable=self.varForRadioBtn, value=2).pack(side = LEFT)
                           
-                
-
-
-
+               
     def onUndo(self):
         if (self.switches < 0):
             return
@@ -241,15 +237,12 @@ class GroupPhotoEditor:
             self.secondPreviewLabel = Label(self.secondPreviewFrame, image = toShow, compound=CENTER,font=("Helvetica", 30))
             self.secondPreviewLabel.image = toShow
             self.secondPreviewLabel.pack(side = RIGHT, fill = BOTH, expand = YES)
-           
             self.targetImg = url
-            print (self.targetImg)
+      
        
         
         
-        if self.firstSwitch == True:
-            Button(self.secondPreviewFrame, text = "Undo", command = self.onUndo).pack(side = BOTTOM, fill = BOTH) 
-            self.firstSwitch = False
+       
             
     def onButton5(self):
         image = cv2.imread(self.initialImg)
@@ -307,6 +300,18 @@ class GroupPhotoEditor:
         photoLogic = PhotoLogic()
         photoLogic.get_facial_convex(image,imageObj)
     
+   # def file_save(self):
+   #     toSave = Image.open(self.targetImg)
+    #    filename = asksaveasfile(filetypes = (("File Interchange Format", "*.jpg;jpeg")
+    #                                                     ,("PNG files", "*.png")
+    #                                                     ,("All files", "*.*") ))
+     #   if filename is None: # asksaveasfile return `None` if dialog closed with "cancel".
+    #        return
+        
+    #    toSave.save(filename)
+    #    filename.close()
+
+
 root = generateWindow()
 gpe = GroupPhotoEditor(root)
 root.mainloop()
