@@ -15,7 +15,6 @@ def generateWindow():
     return root
 
 class GroupPhotoEditor:
-   
 
     initialImg = ""
     targetImg = ""
@@ -36,14 +35,12 @@ class GroupPhotoEditor:
     secondImage = NONE
     number = 0 
 
-    varForCheckbutton1 = NONE
-    varForCheckbutton2 = NONE
+    varForRadioBtn = NONE
 
 
     def __init__(self,master):
         
-        varForCheckbutton1 = IntVar()
-        varForCheckbutton2 = IntVar()
+        self.varForRadioBtn = IntVar()
         firstImg= StringVar()
         secondImg= StringVar()
         firstImg.set("Select first Image")
@@ -164,12 +161,8 @@ class GroupPhotoEditor:
             self.firstPreviewLabel.image = toShow
             # pack the label without image in the frame for preview:
             self.firstPreviewLabel.pack(side = LEFT, fill = BOTH, expand = YES)
-             #Generate checkboxes in ordner to let the user choose whether he/she wants to switch the triangle or the mask of the face
-           # self.checkBoxFrame = Frame(master).pack(side = BOTTOM)
-           # triangleCheckButton = Checkbutton(self.checkBoxFrame,text ="Triangle",variable  = self.varForCheckbutton1)
-           # maskCheckButton = Checkbutton(self.checkBoxFrame,text = "Masks", variable = self.varForCheckbutton2)
-           # triangleCheckButton.pack(side = LEFT)
-           # maskCheckButton.pack(side = RIGHT)   
+             #Generate checkboxes in ordner to let the user choose whether he/she wants to switch the rectangle or the mask of the face
+            
         else:
             self.secondPreviewLabel.destroy()
             # destroy the old label: delete all references to the old image
@@ -178,22 +171,31 @@ class GroupPhotoEditor:
             self.secondPreviewLabel.image = toShow
             # pack the label with out image in the frame for preview:
             self.secondPreviewLabel.pack(side = RIGHT, fill = BOTH, expand = YES)
-    
-       
+            if self.checkBoxFrame == NONE:
+                self.checkBoxFrame = Frame(master).pack(side = BOTTOM)
+                Label(self.checkBoxFrame, text = "Choose option:").pack(side = TOP)
+                Radiobutton(self.checkBoxFrame, text="Rectangle", padx = 20, variable=self.varForRadioBtn, value=1).pack(side = LEFT)
+                Radiobutton(self.checkBoxFrame, text="Mask", padx = 20, variable=self.varForRadioBtn, value=2).pack(side = LEFT)
+                
+                
+              
+
     def onOk(self,number):
-        self.secondPreviewLabel.destroy()
-        photoLogic = PhotoLogic()
-        image = cv2.imread(self.initialImg)
-        target = cv2.imread(self.targetImg)
-        newImage = photoLogic.switch(image, number, target)
-        cv2.imwrite("newImage.jpg", newImage)
-        newImage = cv2.cvtColor(newImage, cv2.COLOR_BGR2RGB)     
-        toShow = ImageTk.PhotoImage(Image.fromarray(newImage).resize((675,450), Image.ANTIALIAS))
-        self.secondPreviewLabel = Label(self.secondPreviewFrame, image = toShow, compound=CENTER,font=("Helvetica", 30))
-        self.secondPreviewLabel.image = toShow
-        self.secondPreviewLabel.pack(side = RIGHT, fill = BOTH, expand = YES)
-        self.targetImg = "newImage.jpg"
-        
+        if self.varForRadioBtn.get() == 1:
+            self.secondPreviewLabel.destroy()
+            photoLogic = PhotoLogic()
+            image = cv2.imread(self.initialImg)
+            target = cv2.imread(self.targetImg)
+            newImage = photoLogic.switch(image, number, target)
+            cv2.imwrite("newImage.jpg", newImage)
+            newImage = cv2.cvtColor(newImage, cv2.COLOR_BGR2RGB)     
+            toShow = ImageTk.PhotoImage(Image.fromarray(newImage).resize((675,450), Image.ANTIALIAS))
+            self.secondPreviewLabel = Label(self.secondPreviewFrame, image = toShow, compound=CENTER,font=("Helvetica", 30))
+            self.secondPreviewLabel.image = toShow
+            self.secondPreviewLabel.pack(side = RIGHT, fill = BOTH, expand = YES)
+            self.targetImg = "newImage.jpg"
+        else:
+            print("Implement Logic for Masks ==> PhotoLogic.switchMasks()")
 
 
     def onButton5(self):
