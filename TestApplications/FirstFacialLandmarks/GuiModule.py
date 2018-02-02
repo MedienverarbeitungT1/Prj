@@ -15,27 +15,35 @@ def generateWindow():
     return root
 
 class GroupPhotoEditor:
-    
+   
+
     initialImg = ""
     targetImg = ""
     noFirstPreviewFrame = True
     noSecondPreviewFrame = True
     noResultFrame = True
+    
+    resultFrame = NONE
     firstPreviewFrame = NONE
     firstPreviewLabel = NONE
     secondPreviewFrame = NONE
     secondPreviewLabel = NONE
-    resultFrame = NONE
-    firstEntry = False
     entryFrame = NONE
+    checkBoxFrame = NONE
+    firstEntry = False
     okButton = NONE
     firstImage = NONE
     secondImage = NONE
     number = 0 
 
+    varForCheckbutton1 = NONE
+    varForCheckbutton2 = NONE
+
+
     def __init__(self,master):
         
-        
+        varForCheckbutton1 = IntVar()
+        varForCheckbutton2 = IntVar()
         firstImg= StringVar()
         secondImg= StringVar()
         firstImg.set("Select first Image")
@@ -134,19 +142,21 @@ class GroupPhotoEditor:
         #cv2.imshow('AUSGANGSBILD 2', target)
         photoLogic = PhotoLogic()
         result = photoLogic.get_rectangles(image)
-       # cv2.imshow('Ergebnis',result)
         result = cv2.cvtColor(result, cv2.COLOR_BGR2RGB)        
         toShow = ImageTk.PhotoImage(Image.fromarray(result).resize((675, 450), Image.ANTIALIAS))
         if (self.firstEntry == False):
+             # Generate a frame which contains the entry for user-input and a button in order to switch the faces from left to right
              self.entryFrame = Frame(master).pack(side = BOTTOM)
              entry = Entry(self.entryFrame)
-             
              entry.pack(side = BOTTOM)
-             # set default-value so python knows that entry contains a string
+             # Set a default-value so python knows that entry contains a string
              entry.setvar("0")
              self.okButton = Button(self.entryFrame,text = "Verschiebe Nr. -->",command = lambda: self.onOk(int(str(entry.get())))).pack(side = BOTTOM)    
-             
              self.firstEntry = True
+            
+            
+
+
         if (first== True):
             self.firstPreviewLabel.destroy()
             self.firstPreviewLabel = Label(self.firstPreviewFrame, image = toShow,text ="Image 1", compound=CENTER,font=("Helvetica", 30))
@@ -154,6 +164,12 @@ class GroupPhotoEditor:
             self.firstPreviewLabel.image = toShow
             # pack the label without image in the frame for preview:
             self.firstPreviewLabel.pack(side = LEFT, fill = BOTH, expand = YES)
+             #Generate checkboxes in ordner to let the user choose whether he/she wants to switch the triangle or the mask of the face
+           # self.checkBoxFrame = Frame(master).pack(side = BOTTOM)
+           # triangleCheckButton = Checkbutton(self.checkBoxFrame,text ="Triangle",variable  = self.varForCheckbutton1)
+           # maskCheckButton = Checkbutton(self.checkBoxFrame,text = "Masks", variable = self.varForCheckbutton2)
+           # triangleCheckButton.pack(side = LEFT)
+           # maskCheckButton.pack(side = RIGHT)   
         else:
             self.secondPreviewLabel.destroy()
             # destroy the old label: delete all references to the old image
@@ -162,6 +178,8 @@ class GroupPhotoEditor:
             self.secondPreviewLabel.image = toShow
             # pack the label with out image in the frame for preview:
             self.secondPreviewLabel.pack(side = RIGHT, fill = BOTH, expand = YES)
+    
+       
     def onOk(self,number):
         self.secondPreviewLabel.destroy()
         photoLogic = PhotoLogic()

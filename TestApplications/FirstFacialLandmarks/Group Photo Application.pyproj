@@ -43,6 +43,10 @@
     <Content Include="haarcascade\haarcascade_eye.xml" />
     <Content Include="haarcascade\haarcascade_frontalface_default.xml" />
     <Content Include="haarcascade\haarcascade_smile.xml" />
+    <Content Include="images\IMG_3515.jpg" />
+    <Content Include="images\IMG_3517.jpg" />
+    <Content Include="images\IMG_3532.jpg" />
+    <Content Include="images\IMG_3533.jpg" />
     <Content Include="images\IMG_3597.JPG" />
     <Content Include="images\IMG_3598.JPG" />
     <Content Include="images\test3.jpg" />

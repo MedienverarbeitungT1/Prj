@@ -72,7 +72,7 @@ class PhotoLogic:
                     return target
 
                 count = count + 1
-       
+        return target
  
 
     def get_faces (self,copy, im, target):
