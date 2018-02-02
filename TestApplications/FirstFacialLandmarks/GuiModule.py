@@ -19,11 +19,13 @@ def generateWindow():
 class GroupPhotoEditor:
 
     initialImg = ""
+    firstTarget = ""
     targetImg = ""
+    lastImg = ""
     noFirstPreviewFrame = True
     noSecondPreviewFrame = True
     noResultFrame = True
-    
+    firstSwitch = True
     resultFrame = NONE
     firstPreviewFrame = NONE
     firstPreviewLabel = NONE
@@ -33,8 +35,9 @@ class GroupPhotoEditor:
     checkBoxFrame = NONE
     firstEntry = False
     okButton = NONE
-    firstImage = NONE
+    switches = 0
     secondImage = NONE
+
     number = 0 
 
     varForRadioBtn = NONE
@@ -82,7 +85,6 @@ class GroupPhotoEditor:
             self.firstPreviewLabel.destroy()
         # create an image by using the filename-URL
         tmp = Image.open(filename)
-        self.firstImage = tmp
         tmp = tmp.resize((450, 300), Image.ANTIALIAS)
         theImage = ImageTk.PhotoImage(tmp)
         # destroy the old label: delete all references to the old image
@@ -102,6 +104,7 @@ class GroupPhotoEditor:
             try: 
                secondImg.set(filename)
                self.targetImg = filename
+               self.firstTarget = filename
             except: 
                 tkMessagebox.showerror("Open Source File", "Failed to read file \n'%s'"%filename)
                 return
@@ -113,7 +116,6 @@ class GroupPhotoEditor:
             self.secondPreviewLabel.destroy()
         # create an image by using the filename-URL
         tmp = Image.open(filename)
-        self.secondImage = tmp
         tmp = tmp.resize((450, 300), Image.ANTIALIAS)
         theImage = ImageTk.PhotoImage(tmp)
         # destroy the old label: delete all references to the old image
@@ -136,12 +138,13 @@ class GroupPhotoEditor:
             image = cv2.imread(self.initialImg)
         else:
             image = cv2.imread(self.targetImg)
-
+         
         #cv2.imshow('AUSGANGSBILD 1', image)
         #cv2.imshow('AUSGANGSBILD 2', target)
         photoLogic = PhotoLogic()
         result = photoLogic.get_rectangles(image)
-        result = cv2.cvtColor(result, cv2.COLOR_BGR2RGB)        
+        result = cv2.cvtColor(result, cv2.COLOR_BGR2RGB)   
+         
         toShow = ImageTk.PhotoImage(Image.fromarray(result).resize((675, 450), Image.ANTIALIAS))
         if (self.firstEntry == False):
              # Generate a frame which contains the entry for user-input and a button in order to switch the faces from left to right
@@ -172,30 +175,57 @@ class GroupPhotoEditor:
             # make sure the references are correct:
             self.secondPreviewLabel.image = toShow
             # pack the label with out image in the frame for preview:
-            self.secondPreviewLabel.pack(side = RIGHT, fill = BOTH, expand = YES)
+            self.secondPreviewLabel.pack(side = RIGHT, fill = BOTH, expand = YES) 
             if self.checkBoxFrame == NONE:
                 self.checkBoxFrame = Frame(master).pack(side = BOTTOM)
                 Label(self.checkBoxFrame, text = "Choose option:").pack(side = TOP)
                 Radiobutton(self.checkBoxFrame, text="Rectangle", padx = 20, variable=self.varForRadioBtn, value=1).pack(side = LEFT)
                 Radiobutton(self.checkBoxFrame, text="Mask", padx = 20, variable=self.varForRadioBtn, value=2).pack(side = LEFT)
+                          
                 
-                
-              
 
+
+
+    def onUndo(self):
+        if (self.switches < 0):
+            return
+        else:
+            print ("Bin aufgerufen")
+            print("Switches: "+str(self.switches))
+            self.secondPreviewLabel.destroy()
+            lastImage = Image.open(self.lastImg)
+            toShow = ImageTk.PhotoImage(lastImage.resize((675, 450), Image.ANTIALIAS))
+            self.secondPreviewLabel = Label(self.secondPreviewFrame, image = toShow)
+            self.secondPreviewLabel.image = toShow
+            self.secondPreviewLabel.pack(side = RIGHT, fill = BOTH, expand = YES)
+            self.targetImg = self.lastImg
+            self.switches = self.switches - 1
+            if (self.switches == 1):
+                self.lastImg = self.firstTarget
+      
     def onOk(self,number):
+        
+        
+        self.lastImg = self.targetImg
         self.secondPreviewLabel.destroy()
         photoLogic = PhotoLogic()
         image = cv2.imread(self.initialImg)
         target = cv2.imread(self.targetImg)
+        self.switches = self.switches + 1
+        url = "newImage"+str(self.switches)+".jpg"
+        
         if self.varForRadioBtn.get() == 1:
             newImage = photoLogic.switchRects(image, number, target)
-            cv2.imwrite("newImage.jpg", newImage)
+            cv2.imwrite(url, newImage)
             newImage = cv2.cvtColor(newImage, cv2.COLOR_BGR2RGB)     
             toShow = ImageTk.PhotoImage(Image.fromarray(newImage).resize((675,450), Image.ANTIALIAS))
             self.secondPreviewLabel = Label(self.secondPreviewFrame, image = toShow, compound=CENTER,font=("Helvetica", 30))
             self.secondPreviewLabel.image = toShow
             self.secondPreviewLabel.pack(side = RIGHT, fill = BOTH, expand = YES)
-            self.targetImg = "newImage.jpg"
+            self.targetImg = url
+            print (self.targetImg)
+            
+
         else:
       
             imageObj = Image.open(self.initialImg)
@@ -205,14 +235,21 @@ class GroupPhotoEditor:
             open_cv_image = numpy.array(newImage1) 
             # Convert RGB to BGR 
             open_cv_image = open_cv_image[:, :, ::-1].copy() 
-            cv2.imwrite("newImage.jpg", open_cv_image)
+            cv2.imwrite(url, open_cv_image)
             #cv2.imshow("", open_cv_image) DEB
             toShow = ImageTk.PhotoImage(newImage.resize((675,450), Image.ANTIALIAS))
             self.secondPreviewLabel = Label(self.secondPreviewFrame, image = toShow, compound=CENTER,font=("Helvetica", 30))
             self.secondPreviewLabel.image = toShow
             self.secondPreviewLabel.pack(side = RIGHT, fill = BOTH, expand = YES)
-            self.targetImg = "newImage.jpg"
-
+           
+            self.targetImg = url
+            print (self.targetImg)
+       
+        
+        
+        if self.firstSwitch == True:
+            Button(self.secondPreviewFrame, text = "Undo", command = self.onUndo).pack(side = BOTTOM, fill = BOTH) 
+            self.firstSwitch = False
             
     def onButton5(self):
         image = cv2.imread(self.initialImg)

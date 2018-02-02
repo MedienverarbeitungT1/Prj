@@ -120,17 +120,7 @@ class PhotoLogic:
         #pilTarget.convert("RGBA")
         target = cv2.cvtColor(target,cv2.COLOR_BGR2RGB)
         pilTarget = Image.fromarray(target)
-
-
-
-
-
-
-
         pilTarget.paste(pilImage,(0,0),pilImage)
-
-        
-        
         return pilTarget;
 
 
