@@ -63,12 +63,12 @@ class GroupPhotoEditor:
         #button6 = Button(bottomFrame,text = "Generate Example", command = lambda: self.onButton6(master,firstImg,secondImg)).pack(fill=BOTH)
         #button7 = Button(bottomFrame,text = "Quit", fg="red", command = master.destroy).pack(fill=BOTH)
         button8 = Button(bottomFrame,text = "Undo last action", fg="red", command = self.onUndo).pack(fill=BOTH)
-        button9 = Button(bottomFrame, text = "Save Image...", command = self.file_save).pack(fill = BOTH)
+      #  button9 = Button(bottomFrame, text = "Save Image...", command = self.file_save).pack(fill = BOTH)
 
     def onButton1(self,master,firstImg):
         
         
-        filename = askopenfilename(filetypes = (("File Interchange Format", "*.jpg;jpeg")
+        filename = askopenfilename(filetypes = (("File Interchange Format", "*.jpg;*.jpeg")
                                                          ,("PNG files", "*.png")
                                                          ,("All files", "*.*") ))
         if filename: 
@@ -98,7 +98,7 @@ class GroupPhotoEditor:
 
     def onButton2(self,master,secondImg):
          
-        filename = askopenfilename(filetypes = (("File Interchange Format", "*.jpg;jpeg")
+        filename = askopenfilename(filetypes = (("File Interchange Format", "*.jpg;*.jpeg")
                                                          ,("PNG files", "*.png")
                                                          ,("All files", "*.*") ))
         if filename: 
@@ -145,6 +145,7 @@ class GroupPhotoEditor:
         #cv2.imshow('AUSGANGSBILD 2', target)
         photoLogic = PhotoLogic()
         result = photoLogic.get_rectangles(image)
+        #photoLogic.get_preview(image)
         result = cv2.cvtColor(result, cv2.COLOR_BGR2RGB)   
          
         toShow = ImageTk.PhotoImage(Image.fromarray(result).resize((675, 450), Image.ANTIALIAS))

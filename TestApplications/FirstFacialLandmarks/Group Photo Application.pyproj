@@ -49,6 +49,18 @@
     <Content Include="images\IMG_3533.jpg" />
     <Content Include="images\IMG_3597.JPG" />
     <Content Include="images\IMG_3598.JPG" />
+    <Content Include="images\newImages\IMG_3614.JPG" />
+    <Content Include="images\newImages\IMG_3614_preview.jpeg" />
+    <Content Include="images\newImages\IMG_3615.JPG" />
+    <Content Include="images\newImages\IMG_3616.JPG" />
+    <Content Include="images\newImages\IMG_3617.JPG" />
+    <Content Include="images\newImages\IMG_3618.JPG" />
+    <Content Include="images\newImages\IMG_3619.JPG" />
+    <Content Include="images\newImages\IMG_3619_preview.jpeg" />
+    <Content Include="images\newImages\IMG_3620.JPG" />
+    <Content Include="images\newImages\IMG_3621.JPG" />
+    <Content Include="images\newImages\IMG_3622.JPG" />
+    <Content Include="images\newImages\IMG_3623.JPG" />
     <Content Include="images\test3.jpg" />
     <Content Include="shape_predictor_68_face_landmarks.dat" />
     <Content Include="images\test.jpg" />
@@ -57,6 +69,7 @@
   <ItemGroup>
     <Folder Include="images\" />
     <Folder Include="haarcascade\" />
+    <Folder Include="images\newImages\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
