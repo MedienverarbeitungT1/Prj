@@ -41,6 +41,7 @@ class GroupPhotoEditor:
     number = 0 
 
     varForRadioBtn = NONE
+    pl = PhotoLogic()
 
 
     def __init__(self,master):
@@ -94,8 +95,8 @@ class GroupPhotoEditor:
         self.firstPreviewLabel.image = theImage
         # pack the label without image in the frame for preview:
         self.firstPreviewLabel.pack(side = LEFT, fill = BOTH, expand = YES)
-        self.rect(master,True)
-
+       
+       
     def onButton2(self,master,secondImg):
          
         filename = askopenfilename(filetypes = (("File Interchange Format", "*.jpg;*.jpeg")
@@ -140,11 +141,13 @@ class GroupPhotoEditor:
             image = cv2.imread(self.initialImg)
         else:
             image = cv2.imread(self.targetImg)
-         
+        pl = PhotoLogic()
+        #pl.get_preview(image)
         #cv2.imshow('AUSGANGSBILD 1', image)
         #cv2.imshow('AUSGANGSBILD 2', target)
-        photoLogic = PhotoLogic()
-        result = photoLogic.get_rectangles(image)
+       
+        self.pl.make_faces(image)
+        result = self.pl.get_rectangles(image)
         #photoLogic.get_preview(image)
         result = cv2.cvtColor(result, cv2.COLOR_BGR2RGB)   
          
@@ -214,6 +217,8 @@ class GroupPhotoEditor:
         if self.varForRadioBtn.get() == 1:
             newImage = photoLogic.switchRects(image, number, target)
             cv2.imwrite(url, newImage)
+            
+            imageWithRects = self.pl.get_rectangles(newImage)
             newImage = cv2.cvtColor(newImage, cv2.COLOR_BGR2RGB)     
             toShow = ImageTk.PhotoImage(Image.fromarray(newImage).resize((675,450), Image.ANTIALIAS))
             self.secondPreviewLabel = Label(self.secondPreviewFrame, image = toShow, compound=CENTER,font=("Helvetica", 30))
@@ -232,9 +237,13 @@ class GroupPhotoEditor:
             open_cv_image = numpy.array(newImage1) 
             # Convert RGB to BGR 
             open_cv_image = open_cv_image[:, :, ::-1].copy() 
+            imageWithRects = self.pl.get_rectangles(open_cv_image)
+            imageWithRects = cv2.cvtColor(imageWithRects, cv2.COLOR_BGR2RGB)               
+
             cv2.imwrite(url, open_cv_image)
+   
             #cv2.imshow("", open_cv_image) DEB
-            toShow = ImageTk.PhotoImage(newImage.resize((675,450), Image.ANTIALIAS))
+            toShow = ImageTk.PhotoImage(Image.fromarray(imageWithRects).resize((675,450), Image.ANTIALIAS))
             self.secondPreviewLabel = Label(self.secondPreviewFrame, image = toShow, compound=CENTER,font=("Helvetica", 30))
             self.secondPreviewLabel.image = toShow
             self.secondPreviewLabel.pack(side = RIGHT, fill = BOTH, expand = YES)

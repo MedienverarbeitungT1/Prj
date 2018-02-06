@@ -15,6 +15,9 @@ class PhotoLogic:
     face_cascade = cv2.CascadeClassifier('haarcascade/haarcascade_frontalface_default.xml')
     eye_cascade = cv2.CascadeClassifier('haarcascade/haarcascade_eye.xml')
     profile_cascade = cv2.CascadeClassifier('haarcascade/haarcascade_profileface_default.xml')
+    face = None   
+
+
 
     def __init__(self):
         self.PREDICTOR_PATH = "shape_predictor_68_face_landmarks.dat"
@@ -22,21 +25,14 @@ class PhotoLogic:
         self.eye_cascade = cv2.CascadeClassifier('haarcascade/haarcascade_eye.xml')
         self.profile_cascade = cv2.CascadeClassifier('haarcascade/haarcascade_profileface_default.xml')
 
-    def sobel (im):
-        im = cv2.Sobel(cv2.cvtColor(im, cv2.COLOR_BGR2GRAY),cv2.CV_64F,0,1,ksize=5)
-        return im;
 
-    def laplace(im):
-        gray = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)
-        im = cv2.GaussianBlur(gray,(3,3),0)
-        laplacian = cv2.Laplacian(im,cv2.CV_64F)
-        return laplacian
+    def make_faces(self, im):
+        copy = im
+        self.face = self.face_cascade.detectMultiScale(copy, 1.3, 5)
 
     def get_rectangles (self, im):
-        copy = im
-        face = self.face_cascade.detectMultiScale(copy, 1.3, 5)
         numberOfFaces = 1
-        for(x,y,w,h) in face:
+        for(x,y,w,h) in self.face:
            # x = int(round(x*0.9))
            # y = int(round(y*0.7))
            # w = int(round(w*1.5))
@@ -47,8 +43,8 @@ class PhotoLogic:
             h = h + 200
           
 
-
-
+            
+            
             #cv2.rectangle(im, (x- 100 ,y - 100 ),(x+(w + 100),y+(h + 100)),(255,0,0),2)
             cv2.rectangle(im, (x,y), (x+w,y+h), (255,0,0),2)
             cv2.putText(im,str(numberOfFaces), (x,y), cv2.FONT_HERSHEY_SIMPLEX, 2, 255, thickness = 2)
@@ -61,69 +57,7 @@ class PhotoLogic:
         return im
 
 
-    def get_preview (self, image): 
-        # Create the haar cascade  
-        faceCascade = self.face_cascade
-   
-        # create the landmark predictor  
-        predictor = dlib.shape_predictor(self.PREDICTOR_PATH)  
-   
-        # convert the image to grayscale  
-        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)  
-   
-        # Detect faces in the image  
-        
-        faces = self.face_cascade.detectMultiScale(gray, 1.3, 5)
-   
-        print("Found {0} faces!".format(len(faces)))  
-   
-        # Draw a rectangle around the faces  
-        for (x, y, w, h) in faces:  
-            x  = x - 100
-            y = y - 100 
-            w = w + 200
-            h = h + 200
-            cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2)  
-   
-            # Converting the OpenCV rectangle coordinates to Dlib rectangle  
-            dlib_rect = dlib.rectangle(int(x), int(y), int(x + w), int(y + h))  
-            print dlib_rect  
-   
-            detected_landmarks = predictor(image, dlib_rect).parts()  
-   
-            landmarks = np.matrix([[p.x, p.y] for p in detected_landmarks])  
-   
-            # copying the image so we can see side-by-side  
-            image_copy = image.copy()  
-   
-            for idx, point in enumerate(landmarks):  
-                pos = (point[0, 0], point[0, 1])  
-   
-                # annotate the positions  
-                cv2.putText(image_copy, str(idx), pos,  
-                fontFace=cv2.FONT_HERSHEY_SIMPLEX,  
-                fontScale=0.4,  
-                color=(0, 0, 255))  
-   
-                # draw points on the landmark positions  
-        cv2.circle(image_copy, pos, 3, color=(0, 255, 255))  
-   
-        cv2.imshow("Faces found", image)  
-        cv2.imshow("Landmarks found", image_copy)  
-        cv2.waitKey(0)  
-
-
-
-
-
-
-
-
-
-
-
-
-
+ 
 
     
     def switchRects(self, im, number,target):
@@ -155,6 +89,20 @@ class PhotoLogic:
 
 
     def switchMasks(self, im,imageObj, number, target):
+#NEW
+        copy = im
+        face = self.face_cascade.detectMultiScale(copy, 1.3, 5)
+        numberOfFaces = 1
+        rects = dlib.rectangles()
+        for(x,y,w,h) in face:
+           # dlib_rect = 
+            
+            rects.append(dlib.rectangle(int(x), int(y), int(x + w), int(y + h))  )
+           # i = i + 1
+
+
+
+#ENDNEW
         
         image = im
 
@@ -162,11 +110,12 @@ class PhotoLogic:
         out_face = np.zeros_like(image)
         detector = dlib.get_frontal_face_detector()
         predictor = dlib.shape_predictor(self.PREDICTOR_PATH)
-        rects = detector(gray, 1)
+        #rects = detector(gray, 1)
         print("Number of faces detected: {}".format(len(rects)))
-       
+        help = 1
         for (i , rect) in enumerate(rects):
-            if (i==number-1):   
+            
+            if (help == number):   
                 
                 shape = predictor(gray, rect)
                 array = []
@@ -182,7 +131,7 @@ class PhotoLogic:
                 cv2.fillConvexPoly(feature_mask, remapped_shape[0:27], 1)
                 feature_mask = feature_mask.astype(np.bool)
                 out_face[feature_mask] = image[feature_mask]
-  
+            help = help + 1
         tmp = cv2.cvtColor(out_face, cv2.COLOR_BGR2GRAY)
         _,alpha = cv2.threshold(tmp,0,255,cv2.THRESH_BINARY)
         b, g, r = cv2.split(out_face)
@@ -203,6 +152,71 @@ class PhotoLogic:
         pilTarget = Image.fromarray(target)
         pilTarget.paste(pilImage,(0,0),pilImage)
         return pilTarget;
+
+
+
+    def switchMasks2(self, image, imageObj, number, target):
+        faceCascade = self.face_cascade
+   
+        # create the landmark predictor  
+        predictor = dlib.shape_predictor(self.PREDICTOR_PATH)  
+   
+        # convert the image to grayscale  
+        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)  
+   
+        # Detect faces in the image  
+        help = 1
+        faces = self.face_cascade.detectMultiScale(gray, 1.3, 5)
+        for (x, y, w, h) in faces:  
+            cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2)  
+   
+        # Converting the OpenCV rectangle coordinates to Dlib rectangle  
+            dlib_rect = dlib.rectangle(int(x), int(y), int(x + w), int(y + h))  
+            print dlib_rect  
+   
+            detected_landmarks = predictor(image, dlib_rect).parts()  
+   
+            landmarks = np.matrix([[p.x, p.y] for p in detected_landmarks])  
+   
+        # copying the image so we can see side-by-side  
+            image_copy = image.copy()  
+            shape = predictor(gray, dlib_rect)
+            array = []
+            for idx, point in enumerate(landmarks):
+                if (idx == number):  
+                    pos = (point[0, 0], point[0, 1])  
+
+                    point = []
+                    point.append(shape.part(x).x)
+                    point.append(shape.part(x).y)
+                    array.append(point)
+                    shape = face_utils.shape_to_np(shape)
+                    remapped_shape = np.zeros_like(shape)
+                    feature_mask = np.zeros((image.shape[0], image.shape[1]))     
+                    remapped_shape = self.face_remap(shape)
+                    cv2.fillConvexPoly(feature_mask, remapped_shape[0:27], 1)
+                    feature_mask = feature_mask.astype(np.bool)
+                    out_face[feature_mask] = image[feature_mask]
+  
+        
+        tmp = cv2.cvtColor(out_face, cv2.COLOR_BGR2GRAY)
+        _,alpha = cv2.threshold(tmp,0,255,cv2.THRESH_BINARY)
+        b, g, r = cv2.split(out_face)
+        rgba = [b,g,r, alpha]
+        dst = cv2.merge(rgba,4)    
+        dst = cv2.cvtColor(dst, cv2.COLOR_RGBA2BGRA)        
+        pilImage = Image.fromarray(dst)
+        
+        x,y = pilImage.size;
+        pilImage.convert("RGBA")
+        imageObj.paste(pilImage,(0,0),pilImage)
+       
+        return image;               
+
+
+
+
+
 
 
     def get_faces (self,copy, im, target):
