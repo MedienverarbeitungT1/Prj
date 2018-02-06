@@ -95,7 +95,7 @@ class GroupPhotoEditor:
         self.firstPreviewLabel.image = theImage
         # pack the label without image in the frame for preview:
         self.firstPreviewLabel.pack(side = LEFT, fill = BOTH, expand = YES)
-       
+        self.rect(master,True)
        
     def onButton2(self,master,secondImg):
          
@@ -126,13 +126,15 @@ class GroupPhotoEditor:
         self.secondPreviewLabel.image = theImage
         # pack the label with out image in the frame for preview:
         self.secondPreviewLabel.pack(side = RIGHT, fill = BOTH, expand = YES)
-        self.rect(master,False)
+        if self.checkBoxFrame == NONE:
+            self.checkBoxFrame = Frame(master).pack(side = BOTTOM)
+            #Label(self.checkBoxFrame, text = "Choose option:").pack(side = UP)
+            Radiobutton(self.checkBoxFrame, text="Rectangle", padx = 20, variable=self.varForRadioBtn, value=1).pack(side = LEFT)
+            Radiobutton(self.checkBoxFrame, text="Mask", padx = 20, variable=self.varForRadioBtn, value=2).pack(side = LEFT)
 
     def onButton3(self):
         imageObj = Image.open(self.initialImg)
         image = cv2.imread(self.targetImg)
-        #cv2.imshow('AUSGANGSBILD 1', image)
-        #cv2.imshow('AUSGANGSBILD 2', cv2.imread(self.initialImg))
         photoLogic = PhotoLogic()
         photoLogic.get_facial_convex(image,imageObj)
 
@@ -141,14 +143,10 @@ class GroupPhotoEditor:
             image = cv2.imread(self.initialImg)
         else:
             image = cv2.imread(self.targetImg)
-        pl = PhotoLogic()
-        #pl.get_preview(image)
-        #cv2.imshow('AUSGANGSBILD 1', image)
-        #cv2.imshow('AUSGANGSBILD 2', target)
+  
        
         self.pl.make_faces(image)
         result = self.pl.get_rectangles(image)
-        #photoLogic.get_preview(image)
         result = cv2.cvtColor(result, cv2.COLOR_BGR2RGB)   
          
         toShow = ImageTk.PhotoImage(Image.fromarray(result).resize((675, 450), Image.ANTIALIAS))
@@ -179,11 +177,8 @@ class GroupPhotoEditor:
             self.secondPreviewLabel.image = toShow
             # pack the label with out image in the frame for preview:
             self.secondPreviewLabel.pack(side = RIGHT, fill = BOTH, expand = YES) 
-            if self.checkBoxFrame == NONE:
-                self.checkBoxFrame = Frame(master).pack(side = BOTTOM)
-                #Label(self.checkBoxFrame, text = "Choose option:").pack(side = UP)
-                Radiobutton(self.checkBoxFrame, text="Rectangle", padx = 20, variable=self.varForRadioBtn, value=1).pack(side = LEFT)
-                Radiobutton(self.checkBoxFrame, text="Mask", padx = 20, variable=self.varForRadioBtn, value=2).pack(side = LEFT)
+     
+               
                           
                
     def onUndo(self):
@@ -208,14 +203,14 @@ class GroupPhotoEditor:
         
         self.lastImg = self.targetImg
         self.secondPreviewLabel.destroy()
-        photoLogic = PhotoLogic()
+        
         image = cv2.imread(self.initialImg)
         target = cv2.imread(self.targetImg)
         self.switches = self.switches + 1
         url = "newImage"+str(self.switches)+".jpg"
         
         if self.varForRadioBtn.get() == 1:
-            newImage = photoLogic.switchRects(image, number, target)
+            newImage = self.pl.switchRects(image, number, target)
             cv2.imwrite(url, newImage)
             
             imageWithRects = self.pl.get_rectangles(newImage)
@@ -232,7 +227,7 @@ class GroupPhotoEditor:
       
             imageObj = Image.open(self.initialImg)
             image = cv2.imread(self.initialImg)
-            newImage = photoLogic.switchMasks(image,imageObj,number,target)
+            newImage = self.pl.switchMasks(image,imageObj,number,target)
             newImage1 = newImage.convert('RGB') 
             open_cv_image = numpy.array(newImage1) 
             # Convert RGB to BGR 

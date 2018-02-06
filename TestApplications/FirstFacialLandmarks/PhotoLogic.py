@@ -111,7 +111,7 @@ class PhotoLogic:
         detector = dlib.get_frontal_face_detector()
         predictor = dlib.shape_predictor(self.PREDICTOR_PATH)
         #rects = detector(gray, 1)
-        print("Number of faces detected: {}".format(len(rects)))
+        print("Log: ---Number of faces detected: {}".format(len(rects)))
         help = 1
         for (i , rect) in enumerate(rects):
             
@@ -172,7 +172,7 @@ class PhotoLogic:
    
         # Converting the OpenCV rectangle coordinates to Dlib rectangle  
             dlib_rect = dlib.rectangle(int(x), int(y), int(x + w), int(y + h))  
-            print dlib_rect  
+            print ("Log --- Rectangles: "+dlib_rect)  
    
             detected_landmarks = predictor(image, dlib_rect).parts()  
    
@@ -249,7 +249,7 @@ class PhotoLogic:
 
 
 
-        print("Number of faces detected: {}".format(len(rects)))
+        print("Log: ---Number of faces detected: {}".format(len(rects)))
         for (i, rect) in enumerate(rects):
            
             shape = predictor(gray, rect)
