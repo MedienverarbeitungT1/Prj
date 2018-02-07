@@ -79,8 +79,7 @@ class GroupPhotoEditor:
         Pack the Buttons into the ButtonFrame:
         firstImgButton: Choose the first image via tkFileDialog.
         secondImgButton: Choose the first image via tkFileDialog.
-        generateMasksButton: Generate an image which puts the masks of the faces in the first picure onto the second image.
-        generateRectsButton: Generate an image which puts the rectangles of the face onto the other image.
+        saveButton: Save the image
         undoButton: Undo the last action.
         '''
         firstImgButton = Button(bottomFrame,textvariable = firstImg, command= lambda:self.onFirstImgButton(master,firstImg)).pack(fill=BOTH)
