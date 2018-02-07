@@ -41,7 +41,7 @@ class PhotoLogic:
                 -im: cv2 image, used as the source image
     returns:    -im    
     Description: 
-    This will detect faces in the image and create numbered rectangles around them while counting the faces.
+    This will detect faces in the image and create numbered rectangles around them while also counting the faces.
     '''
     def get_rectangles (self, im):
         # count detected faces
