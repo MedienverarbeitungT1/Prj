@@ -25,87 +25,110 @@ class PhotoLogic:
         self.eye_cascade = cv2.CascadeClassifier('haarcascade/haarcascade_eye.xml')
         self.profile_cascade = cv2.CascadeClassifier('haarcascade/haarcascade_profileface_default.xml')
 
-
+    '''
+    name: get_rectangles
+    arguments:  -self: the PhotoLogic instance
+                -im: cv2 image, used as the source image
+    returns:    - 
+    Description: 
+    
+    '''
     def make_faces(self, im):
         copy = im
         self.face = self.face_cascade.detectMultiScale(copy, 1.3, 5)
 
+    '''
+    name: get_rectangles
+    arguments:  -self: the PhotoLogic instance
+                -im: cv2 image, used as the source image
+    returns:    -im    
+    Description: 
+    This will detect faces in the image and create numbered rectangles around them while counting the faces.
+    '''
     def get_rectangles (self, im):
         numberOfFaces = 1
         for(x,y,w,h) in self.face:
-           # x = int(round(x*0.9))
-           # y = int(round(y*0.7))
-           # w = int(round(w*1.5))
-           # h = int(round(h*1.7))
-            x = x - 100
-            y = y - 100 
-            w = w + 200
-            h = h + 200
-          
-
             
+            # adjust the size of the rectangles, so it encloses the entire head, not only the face
+            x = x - 50
+            y = y - 50
+            w = int(round(w*2.2))
+            h = int(round(h*2.2))
             
-            #cv2.rectangle(im, (x- 100 ,y - 100 ),(x+(w + 100),y+(h + 100)),(255,0,0),2)
+            # draw the rectangles, set their colour to blue
             cv2.rectangle(im, (x,y), (x+w,y+h), (255,0,0),2)
             cv2.putText(im,str(numberOfFaces), (x,y), cv2.FONT_HERSHEY_SIMPLEX, 2, 255, thickness = 2)
             
-            #crop_img = copy[y:y+h,x:x+w]
-            #target[y:y+crop_img.shape[0], x:x+crop_img.shape[1]] = crop_img
             roi = im [y:y+h, x:x+w]
             eye = self.eye_cascade.detectMultiScale(roi,minNeighbors = 3)
+
+            # count the detected faces
             numberOfFaces = numberOfFaces+1
         return im
 
 
- 
-
-    
+    '''
+    name: switchRects
+    arguments:  -self: the PhotoLogic instance
+                -im: cv2 image, used as source image that will be cropped
+                -number: the number entered by the user
+                -target: cv2 image, the target image the cropped part is pasted onto
+    returns:    -target     
+    Description: 
+    This will crop the content within the rectangle and paste it onto the target image.
+    The rectangle used for the cropping is the one that corresponds with the number the user entered.
+    '''
     def switchRects(self, im, number,target):
         copy = im  
         face = self.face_cascade.detectMultiScale(copy, 1.3, 5)
         count = 1
         for(x,y,w,h) in face:
-               # x = int(round(x*0.9))
-              #  y = int(round(y*0.7))
-             #   w = int(round(w*1.5))
-              #  h = int(round(h*1.7))
-               
+
                 if count==number:
                     #cv2.rectangle(im, (x- 100 ,y - 100 ),(x+(w + 100),y+(h + 100)),(255,0,0),2)
                     
-                    x = x - 100
-                    y = y - 100 
-                    w = w + 200
-                    h = h + 200
+                    # adjust the size of the rectangles, so it encloses the entire head, not only the face
+                    x = x - 50
+                    y = y - 50
+                    w = int(round(w*2.2))
+                    h = int(round(h*2.2))
+                  
+                    # crop the part of the image within the rectangle
                     crop_img = copy[y:y+h,x:x+w]
                     
+                    # paste the cropped part onto the target image
                     target[y:y+crop_img.shape[0], x:x+crop_img.shape[1]] = crop_img
-                    #roi = im [y-100:y+h, x:x+w]
-                   # eye = self.eye_cascade.detectMultiScale(roi,minNeighbors = 3)
+                  
                     return target
-
+                
                 count = count + 1
         return target
 
+    '''
+    name: switchMasks
+    arguments:  -self: the PhotoLogic instance
+                -im: cv2 image, used as source image
+                -imageObj: PIL version of the cv2 image im
+                -number: the number entered by the user
+                -target: the target image the mask is pasted onto
+    returns:    -pilTarget     
+    Description: 
+    This will create a mask of a face in the source image, then crop the content within the mask and paste it onto the target image.
+    The cropped face is the one that corresponds with the number the user entered.
+    '''
+    def switchMasks(self, im, imageObj, number, target):
 
-    def switchMasks(self, im,imageObj, number, target):
-#NEW
         copy = im
         face = self.face_cascade.detectMultiScale(copy, 1.3, 5)
         numberOfFaces = 1
         rects = dlib.rectangles()
         for(x,y,w,h) in face:
-           # dlib_rect = 
-            
+
             rects.append(dlib.rectangle(int(x), int(y), int(x + w), int(y + h))  )
-           # i = i + 1
-
-
-
-#ENDNEW
         
         image = im
 
+        # convert colour from BGR to greyscale
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         out_face = np.zeros_like(image)
         detector = dlib.get_frontal_face_detector()
@@ -118,176 +141,60 @@ class PhotoLogic:
             if (help == number):   
                 
                 shape = predictor(gray, rect)
+                # array will include the coordinates of the facial landmarks for each face
                 array = []
                 for x in range(0,shape.num_parts):
                     point = []
+                    # add facial landmark coordinates to point
                     point.append(shape.part(x).x)
                     point.append(shape.part(x).y)
+                    # add point to array
                     array.append(point)
                 shape = face_utils.shape_to_np(shape)
                 remapped_shape = np.zeros_like(shape)
                 feature_mask = np.zeros((image.shape[0], image.shape[1]))     
                 remapped_shape = self.face_remap(shape)
+                # draw filled convex polygon
                 cv2.fillConvexPoly(feature_mask, remapped_shape[0:27], 1)
                 feature_mask = feature_mask.astype(np.bool)
                 out_face[feature_mask] = image[feature_mask]
             help = help + 1
+
+        # convert colour from BGR to greyscale
         tmp = cv2.cvtColor(out_face, cv2.COLOR_BGR2GRAY)
         _,alpha = cv2.threshold(tmp,0,255,cv2.THRESH_BINARY)
         b, g, r = cv2.split(out_face)
         rgba = [b,g,r, alpha]
-        dst = cv2.merge(rgba,4)    
+        dst = cv2.merge(rgba,4)
+
+        # convert colour from RGBA to BGRA    
         dst = cv2.cvtColor(dst, cv2.COLOR_RGBA2BGRA)        
         pilImage = Image.fromarray(dst)
         
         x,y = pilImage.size
+        # convert pilImage to RGBA
         pilImage.convert("RGBA")
-
-
 
         #target = cv2.cvtColor(target,cv2.COLOR_BGR2RGB)
         #pilTarget = Image.fromarray(target)
         #pilTarget.convert("RGBA")
+
+        # convert colour from BGR to RGB
         target = cv2.cvtColor(target,cv2.COLOR_BGR2RGB)
         pilTarget = Image.fromarray(target)
+        # paste cropped mask onto the target image
         pilTarget.paste(pilImage,(0,0),pilImage)
         return pilTarget;
 
-
-
-    def switchMasks2(self, image, imageObj, number, target):
-        faceCascade = self.face_cascade
-   
-        # create the landmark predictor  
-        predictor = dlib.shape_predictor(self.PREDICTOR_PATH)  
-   
-        # convert the image to grayscale  
-        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)  
-   
-        # Detect faces in the image  
-        help = 1
-        faces = self.face_cascade.detectMultiScale(gray, 1.3, 5)
-        for (x, y, w, h) in faces:  
-            cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2)  
-   
-        # Converting the OpenCV rectangle coordinates to Dlib rectangle  
-            dlib_rect = dlib.rectangle(int(x), int(y), int(x + w), int(y + h))  
-            print ("Log --- Rectangles: "+dlib_rect)  
-   
-            detected_landmarks = predictor(image, dlib_rect).parts()  
-   
-            landmarks = np.matrix([[p.x, p.y] for p in detected_landmarks])  
-   
-        # copying the image so we can see side-by-side  
-            image_copy = image.copy()  
-            shape = predictor(gray, dlib_rect)
-            array = []
-            for idx, point in enumerate(landmarks):
-                if (idx == number):  
-                    pos = (point[0, 0], point[0, 1])  
-
-                    point = []
-                    point.append(shape.part(x).x)
-                    point.append(shape.part(x).y)
-                    array.append(point)
-                    shape = face_utils.shape_to_np(shape)
-                    remapped_shape = np.zeros_like(shape)
-                    feature_mask = np.zeros((image.shape[0], image.shape[1]))     
-                    remapped_shape = self.face_remap(shape)
-                    cv2.fillConvexPoly(feature_mask, remapped_shape[0:27], 1)
-                    feature_mask = feature_mask.astype(np.bool)
-                    out_face[feature_mask] = image[feature_mask]
-  
-        
-        tmp = cv2.cvtColor(out_face, cv2.COLOR_BGR2GRAY)
-        _,alpha = cv2.threshold(tmp,0,255,cv2.THRESH_BINARY)
-        b, g, r = cv2.split(out_face)
-        rgba = [b,g,r, alpha]
-        dst = cv2.merge(rgba,4)    
-        dst = cv2.cvtColor(dst, cv2.COLOR_RGBA2BGRA)        
-        pilImage = Image.fromarray(dst)
-        
-        x,y = pilImage.size;
-        pilImage.convert("RGBA")
-        imageObj.paste(pilImage,(0,0),pilImage)
-       
-        return image;               
-
-
-
-
-
-
-
-    def get_faces (self,copy, im, target):
-        face = self.face_cascade.detectMultiScale(copy, 1.3, 5)
-        numberOfFaces = 1
-        for(x,y,w,h) in face:
-            x = int(round(x*0.9))
-            y = int(round(y*0.7))
-            w = int(round(w*1.5))
-            h = int(round(h*1.7))
-            crop_img = copy[y:y+h,x:x+w]
-            target[y:y+crop_img.shape[0], x:x+crop_img.shape[1]] = crop_img
-            roi = im [y:y+h, x:x+w]
-            eye = self.eye_cascade.detectMultiScale(roi,minNeighbors = 3)
-            numberOfFaces = numberOfFaces+1
-        return target
-
-    def get_facial_convex(self,im,imageObj):
-        image = im
+    '''
+    name: face_remap
+    arguments:  -self: the PhotoLogic instance
+                -shape: 
+    returns:    -remapped_image    
+    Description: 
+    '''
+    #WHAT DOES IT DOOOOOOOOOOO???
     
-        #result = Image.open('images/alexsashaausgang2.JPG')
-        result = Image.open('images/IMG_3597.JPG')
-        #result = Image.open('images/alexsashaausgang2.JPG')
-        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-        out_face = np.zeros_like(image)
-        detector = dlib.get_frontal_face_detector()
-        predictor = dlib.shape_predictor(self.PREDICTOR_PATH)
-        rects = detector(gray, 1)
-        
-
-
-
-        print("Log: ---Number of faces detected: {}".format(len(rects)))
-        for (i, rect) in enumerate(rects):
-           
-            shape = predictor(gray, rect)
-            array = []
-            for x in range(0,shape.num_parts):
-                point = []
-                point.append(shape.part(x).x)
-                point.append(shape.part(x).y)
-                array.append(point)
-            shape = face_utils.shape_to_np(shape)
-            remapped_shape = np.zeros_like(shape)
-            feature_mask = np.zeros((image.shape[0], image.shape[1]))     
-            remapped_shape = self.face_remap(shape)
-            cv2.fillConvexPoly(feature_mask, remapped_shape[0:27], 1)
-            feature_mask = feature_mask.astype(np.bool)
-            out_face[feature_mask] = image[feature_mask]
-  
-        
-        tmp = cv2.cvtColor(out_face, cv2.COLOR_BGR2GRAY)
-        _,alpha = cv2.threshold(tmp,0,255,cv2.THRESH_BINARY)
-        b, g, r = cv2.split(out_face)
-        rgba = [b,g,r, alpha]
-        dst = cv2.merge(rgba,4)    
-        dst = cv2.cvtColor(dst, cv2.COLOR_RGBA2BGRA)        
-        pilImage = Image.fromarray(dst)
-        
-        x,y = pilImage.size;
-        pilImage.convert("RGBA")
-        imageObj.paste(pilImage,(0,0),pilImage)
-        
-        
-                
-        imageObj.show()
-        cv2.waitKey(0)
-    # imageObj.show()
-        return image;
-
-
     def face_remap(self, shape):
         remapped_image = shape.copy()
    # left eye brow
