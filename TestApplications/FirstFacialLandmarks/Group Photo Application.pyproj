@@ -30,46 +30,24 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="haarcascade\haarcascade_profileface.xml" />
-    <Content Include="images\alexsashaanniausgang1.JPG" />
-    <Content Include="images\alexsashaanniausgang2.JPG" />
-    <Content Include="images\alexsashaannitarget1.JPG" />
-    <Content Include="images\alexsashaannitarget2.JPG" />
-    <Content Include="images\alexsashaausgang1.JPG" />
-    <Content Include="images\alexsashaausgang2.jpg" />
-    <Content Include="images\alexsashatarget1.JPG" />
-    <Content Include="images\alexsashatarget2.jpg" />
-    <Content Include="images\donald.jpg" />
-    <Content Include="images\gesicht.png" />
     <Content Include="haarcascade\haarcascade_eye.xml" />
     <Content Include="haarcascade\haarcascade_frontalface_default.xml" />
     <Content Include="haarcascade\haarcascade_smile.xml" />
-    <Content Include="images\IMG_3515.jpg" />
-    <Content Include="images\IMG_3517.jpg" />
-    <Content Include="images\IMG_3532.jpg" />
-    <Content Include="images\IMG_3533.jpg" />
-    <Content Include="images\IMG_3597.JPG" />
-    <Content Include="images\IMG_3598.JPG" />
-    <Content Include="images\newImages\IMG_3614.JPG" />
-    <Content Include="images\newImages\IMG_3614_preview.jpeg" />
-    <Content Include="images\newImages\IMG_3615.JPG" />
-    <Content Include="images\newImages\IMG_3616.JPG" />
-    <Content Include="images\newImages\IMG_3617.JPG" />
-    <Content Include="images\newImages\IMG_3618.JPG" />
-    <Content Include="images\newImages\IMG_3619.JPG" />
-    <Content Include="images\newImages\IMG_3619_preview.jpeg" />
-    <Content Include="images\newImages\IMG_3620.JPG" />
-    <Content Include="images\newImages\IMG_3621.JPG" />
-    <Content Include="images\newImages\IMG_3622.JPG" />
-    <Content Include="images\newImages\IMG_3623.JPG" />
-    <Content Include="images\test3.jpg" />
+    <Content Include="images\IMG_3614_preview.jpeg" />
+    <Content Include="images\IMG_3615_preview.jpeg" />
+    <Content Include="images\IMG_3616_preview.jpeg" />
+    <Content Include="images\IMG_3617_preview.jpeg" />
+    <Content Include="images\IMG_3618_preview.jpeg" />
+    <Content Include="images\IMG_3619_preview.jpeg" />
+    <Content Include="images\IMG_3620_preview.jpeg" />
+    <Content Include="images\IMG_3621_preview.jpeg" />
+    <Content Include="images\IMG_3622_preview.jpeg" />
+    <Content Include="images\IMG_3623_preview.jpeg" />
     <Content Include="shape_predictor_68_face_landmarks.dat" />
-    <Content Include="images\test.jpg" />
-    <Content Include="images\test2.jpg" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="images\" />
     <Folder Include="haarcascade\" />
-    <Folder Include="images\newImages\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
