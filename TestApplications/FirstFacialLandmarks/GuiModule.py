@@ -16,6 +16,7 @@ from PhotoLogic import *
 from PIL import ImageTk, Image
 import tkFont
 from Tkinter import Entry
+import os
 
 '''
 name: generateWindow
@@ -84,7 +85,7 @@ class GroupPhotoEditor:
         '''
         firstImgButton = Button(bottomFrame,textvariable = firstImg, command= lambda:self.onFirstImgButton(master,firstImg)).pack(fill=BOTH)
         secondImgButton = Button(bottomFrame,textvariable = secondImg, command = lambda: self.onSecondImgButton(master,secondImg)).pack(fill=BOTH)
-        saveButton = Button(bottomFrame, text = "Save the image").pack(fill = BOTH)
+        saveButton = Button(bottomFrame, text = "Save the image", command = self.file_save).pack(fill = BOTH)
         undoButton = Button(bottomFrame,text = "Undo last action", fg="red", command = self.onUndo).pack(fill=BOTH)
       
 
@@ -312,21 +313,23 @@ class GroupPhotoEditor:
             self.secondPreviewLabel.image = toShow
             self.secondPreviewLabel.pack(side = RIGHT, fill = BOTH, expand = YES)
             self.targetImg = url
-      
-       
-        
-      
-    
+
+    '''
+    name: file_save
+    arguments:  self:   The GuiModule-instance
+    returns: -
+    Description:
+    When a user clicks on save image the image will be saved
+    '''        
     def file_save(self):
-        toSave = Image.open(self.targetImg)
-        filename = asksaveasfile(filetypes = (("File Interchange Format", "*.jpg;jpeg")
-                                                                ,("PNG files", "*.png")
-                                                                ,("All files", "*.*") ))
-        if filename is None: # asksaveasfile return `None` if dialog closed with "cancel".
-            return
-        
-        toSave.save(filename)
-        filename.close()
+        img = cv2.imread(self.targetImg,1)
+        cv2.imshow("Result",img)
+        cv2.imwrite('C:/Users/alex/Desktop/Results/Image.jpg', img)
+        cv2.waitKey(0)
+
+
+
+
 
 
 # Generate the window and let it loop
