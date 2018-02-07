@@ -89,7 +89,6 @@ class PhotoLogic:
 
 
     def switchMasks(self, im,imageObj, number, target):
-#NEW
         copy = im
         face = self.face_cascade.detectMultiScale(copy, 1.3, 5)
         numberOfFaces = 1
@@ -98,11 +97,7 @@ class PhotoLogic:
            # dlib_rect = 
             
             rects.append(dlib.rectangle(int(x), int(y), int(x + w), int(y + h))  )
-           # i = i + 1
 
-
-
-#ENDNEW
         
         image = im
 
